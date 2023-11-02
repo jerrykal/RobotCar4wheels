@@ -13,9 +13,9 @@ using System.Reflection;
 using WebSocketSharp;
 using MiniJSON;
 
-
 public class TrainingManager : MonoBehaviour
-{   
+{
+    bool debug = false;
     string topicName = "/unity2Ros"; 
     string topicName_receive = "/ros2Unity"; 
     
@@ -120,8 +120,15 @@ public class TrainingManager : MonoBehaviour
         MoveGameObject(target, newTarget);
 
         State state = updateState(newTarget, curver);
-        
-        Send(state);
+
+        if (debug)
+        {
+            Send(state);
+
+            StartStep();
+        }
+
+        target_change_flag = 1;
 
     }
 
@@ -198,6 +205,10 @@ public class TrainingManager : MonoBehaviour
                 
                 action.voltage.Add((float)data[2]);
 
+                action.voltage.Add((float)data[3]);
+
+                action.voltage.Add((float)data[4]);
+
                 robot.DoAction(action);
                 StartStep();
 
@@ -265,7 +276,9 @@ public class TrainingManager : MonoBehaviour
    
 
     void StartStep()
-    {   
+    {
+        if(debug)
+            Debug.Log("startstep");
         phase = Phase.Run;
         currentStepTime = 0;
         Time.timeScale = 1;
@@ -273,16 +286,29 @@ public class TrainingManager : MonoBehaviour
 
     void EndStep()
     {
+        if (debug)
+            Debug.Log("endstep");
         phase = Phase.Freeze;
 
         
 
         State state = updateState(newTarget, curver);
         Send(state);
-        
         // Debug.Log(state.carPosition);
         // Debug.Log(state.ROS2TargetPosition);
-                
+        if (debug)
+        {
+            Robot.Action action = new Robot.Action();
+            action.voltage = new List<float>();
+
+            action.voltage.Add(1000f);
+            action.voltage.Add(-1000f);
+            action.voltage.Add(1000f);
+            action.voltage.Add(-1000f);
+
+            robot.DoAction(action);
+            StartStep();
+        }
     }
 
     
@@ -316,7 +342,9 @@ public class TrainingManager : MonoBehaviour
     }
 
     void Send(object data)
-    {   
+    {
+        if (debug)
+            return;
         List<float> send_to_python = new List<float>();
         var properties = typeof(State).GetProperties();
         foreach (var property in properties)

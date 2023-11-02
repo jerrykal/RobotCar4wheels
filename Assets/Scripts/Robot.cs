@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using RosMessageTypes.Geometry;
-
 public class Robot : MonoBehaviour
 {   
 
@@ -46,9 +45,9 @@ public class Robot : MonoBehaviour
             // Util.GetOrAddComponent<MotionSensor>(transform, "left_front_forward_wheel"),
             Util.GetOrAddComponent<MotionSensor>(transform, "right_back_forward_wheel"),
             // Util.GetOrAddComponent<MotionSensor>(transform, "right_front_forward_wheel")
-            // Util.GetOrAddComponent<MotionSensor>(transform, "left_front_steering_wheel"),
+            Util.GetOrAddComponent<MotionSensor>(transform, "left_front_steering_wheel"),
 
-            // Util.GetOrAddComponent<MotionSensor>(transform, "right_front_steering_wheel"),
+            Util.GetOrAddComponent<MotionSensor>(transform, "right_front_steering_wheel"),
         };
 
         motorListMF = new List<MotorMoveForward>() {
@@ -56,9 +55,9 @@ public class Robot : MonoBehaviour
             // Util.GetOrAddComponent<MotorMoveForward>(transform, "left_front_forward_wheel"),
             Util.GetOrAddComponent<MotorMoveForward>(transform, "right_back_forward_wheel"),
             // Util.GetOrAddComponent<MotorMoveForward>(transform, "right_front_forward_wheel"),
-            // Util.GetOrAddComponent<MotorMoveForward>(transform, "left_front_steering_wheel"),
+            Util.GetOrAddComponent<MotorMoveForward>(transform, "left_front_steering_wheel"),
             
-            // Util.GetOrAddComponent<MotorMoveForward>(transform, "right_front_steering_wheel"),
+             Util.GetOrAddComponent<MotorMoveForward>(transform, "right_front_steering_wheel"),
         };
    
 
@@ -151,18 +150,19 @@ public class Robot : MonoBehaviour
     
 
     public void DoAction(Action action)
-    {   
+    {
         ////rear engine
         // motorListMF[0].SetVoltage(action[0]);
         // motorListMF[1].SetVoltage(action[1]);
-        
+        Debug.Log(motorListMF.Count);
+        Debug.Log(action.voltage.Count);
         motorListMF[0].SetVoltage((float)action.voltage[0]);
         
         motorListMF[1].SetVoltage((float)action.voltage[1]);
 
-        // motorListMF[2].SetVoltage((float)action.voltage[0]);
+        motorListMF[2].SetVoltage((float)action.voltage[2]);
         
-        // motorListMF[3].SetVoltage((float)action.voltage[1]);
+        motorListMF[3].SetVoltage((float)action.voltage[3]);
     }
 
     public float getTargetAngle(Vector2 pos, Vector2 targetPos)
