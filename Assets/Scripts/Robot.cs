@@ -79,10 +79,14 @@ public class Robot : MonoBehaviour
         Vector3 angVRF = wheelM[3].AngularV;
         // Quaternion qLF = wheelBaseM[2].q;
         // Quaternion qRF = wheelBaseM[3].q;
-        float range = lidar.GetMinRange();
+        List<float> range = lidar.GetRange();
+
         // Debug.Log("min range: " + range);
 
-        Vector3 rangeDirection = lidar.GetMinRangeDirection();
+        var rangeDirection = lidar.GetRangeDirection();
+        for(int i = 0; i < rangeDirection.Count; i++){
+            rangeDirection[i] = ToRosVec(rangeDirection[i]);
+        }
 
         State ROS2State = new State(){
             // targetPosition = newTarget,
@@ -116,9 +120,9 @@ public class Robot : MonoBehaviour
             ROS2WheelAngularVelocityRightFront = ToRosVec(angVRF),
             // ROS2WheelQuaternionLeftFront = ToRosQuaternion(qLF),
             // ROS2WheelQuaternionRightFront = ToRosQuaternion(qRF),
-            ROS2MinRange = range,
+            ROS2Range = range.ToArray(),
             // ROS2MinRangeDirection = ToRosVec(rangeDirection),
-            ROS2MinRangePosition = ToRosVec(rangeDirection),
+            ROS2RangePosition = rangeDirection.ToArray(),
             
 
         };
