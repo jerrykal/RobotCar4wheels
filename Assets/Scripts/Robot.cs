@@ -42,22 +42,24 @@ public class Robot : MonoBehaviour
         
         wheelM = new List<MotionSensor>() {
             Util.GetOrAddComponent<MotionSensor>(transform, "left_back_forward_wheel"),
-            // Util.GetOrAddComponent<MotionSensor>(transform, "left_front_forward_wheel"),
+            Util.GetOrAddComponent<MotionSensor>(transform, "left_front_forward_wheel"),
             Util.GetOrAddComponent<MotionSensor>(transform, "right_back_forward_wheel"),
-            // Util.GetOrAddComponent<MotionSensor>(transform, "right_front_forward_wheel")
-            Util.GetOrAddComponent<MotionSensor>(transform, "left_front_steering_wheel"),
+            Util.GetOrAddComponent<MotionSensor>(transform, "right_front_forward_wheel")
 
-            Util.GetOrAddComponent<MotionSensor>(transform, "right_front_steering_wheel"),
+            // Util.GetOrAddComponent<MotionSensor>(transform, "left_front_steering_wheel"),
+
+            // Util.GetOrAddComponent<MotionSensor>(transform, "right_front_steering_wheel"),
         };
 
         motorListMF = new List<MotorMoveForward>() {
             Util.GetOrAddComponent<MotorMoveForward>(transform, "left_back_forward_wheel"),
-            // Util.GetOrAddComponent<MotorMoveForward>(transform, "left_front_forward_wheel"),
+            Util.GetOrAddComponent<MotorMoveForward>(transform, "left_front_forward_wheel"),
             Util.GetOrAddComponent<MotorMoveForward>(transform, "right_back_forward_wheel"),
-            // Util.GetOrAddComponent<MotorMoveForward>(transform, "right_front_forward_wheel"),
-            Util.GetOrAddComponent<MotorMoveForward>(transform, "left_front_steering_wheel"),
+            Util.GetOrAddComponent<MotorMoveForward>(transform, "right_front_forward_wheel"),
+
+            // Util.GetOrAddComponent<MotorMoveForward>(transform, "left_front_steering_wheel"),
             
-             Util.GetOrAddComponent<MotorMoveForward>(transform, "right_front_steering_wheel"),
+             // Util.GetOrAddComponent<MotorMoveForward>(transform, "right_front_steering_wheel"),
         };
    
 
@@ -72,11 +74,11 @@ public class Robot : MonoBehaviour
         Vector3 carAngV = baseLinkM.AngularV;
         Quaternion carQ = baseLinkM.q;
         Vector3 angVLB = wheelM[0].AngularV;
-        // Vector3 angVLF = wheelM[1].AngularV;
-        Vector3 angVRB = wheelM[1].AngularV;
-        // Vector3 angVRF = wheelM[3].AngularV;
-        // Quaternion qLF = wheelBaseM[0].q;
-        // Quaternion qRF = wheelBaseM[1].q;
+        Vector3 angVLF = wheelM[1].AngularV;
+        Vector3 angVRB = wheelM[2].AngularV;
+        Vector3 angVRF = wheelM[3].AngularV;
+        // Quaternion qLF = wheelBaseM[2].q;
+        // Quaternion qRF = wheelBaseM[3].q;
         float range = lidar.GetMinRange();
         // Debug.Log("min range: " + range);
 
@@ -109,9 +111,9 @@ public class Robot : MonoBehaviour
             ROS2CarAugularVelocity = ToRosVec(carAngV),
             ROS2CarQuaternion = ToRosQuaternion(carQ),
             ROS2WheelAngularVelocityLeftBack = ToRosVec(angVLB),
-            // ROS2WheelAngularVelocityLeftFront = ToRosVec(angVLF),
+            ROS2WheelAngularVelocityLeftFront = ToRosVec(angVLF),
             ROS2WheelAngularVelocityRightBack = ToRosVec(angVRB),
-            // ROS2WheelAngularVelocityRightFront = ToRosVec(angVRF),
+            ROS2WheelAngularVelocityRightFront = ToRosVec(angVRF),
             // ROS2WheelQuaternionLeftFront = ToRosQuaternion(qLF),
             // ROS2WheelQuaternionRightFront = ToRosQuaternion(qRF),
             ROS2MinRange = range,
@@ -154,8 +156,8 @@ public class Robot : MonoBehaviour
         ////rear engine
         // motorListMF[0].SetVoltage(action[0]);
         // motorListMF[1].SetVoltage(action[1]);
-        Debug.Log(motorListMF.Count);
-        Debug.Log(action.voltage.Count);
+        // Debug.Log(motorListMF.Count);
+        Debug.Log("action " + action.voltage[0] + " " + action.voltage[1] + " " + action.voltage[2] + " " + action.voltage[3]);
         motorListMF[0].SetVoltage((float)action.voltage[0]);
         
         motorListMF[1].SetVoltage((float)action.voltage[1]);
