@@ -146,7 +146,6 @@ public class TrainingManager : MonoBehaviour
     {  
 
         if(target_change_flag == 1){
-
             change_target();
             target_change_flag = 0;
         }   
@@ -154,7 +153,14 @@ public class TrainingManager : MonoBehaviour
                 
                           
     }
-        
+
+    Vector3 get_new_target() {
+        float dist = 0.5f;
+        float angle = randomFloat(0, 360);
+        float x = dist * Mathf.Cos(angle * Mathf.Deg2Rad);
+        float y = dist * Mathf.Sin(angle * Mathf.Deg2Rad);
+        return new Vector3(carPos[0] + x, 0, carPos[2] + y);
+    }
     
 
     void change_target()
@@ -166,31 +172,11 @@ public class TrainingManager : MonoBehaviour
             anchor3.transform.position,
             anchor4.transform.position
         };
-        newTarget = new Vector3(carPos[0]-20, 0, carPos[2]-20);
-
-        while (!IsPointInsidePolygon(newTarget, outerPolygonVertices)){
-            target_x = Random.Range(-3.0f, 3.0f);
-
-            if (target_x <= 1 && target_x >= -1) {
-                if (target_x > 0) {
-                    target_x += 1;
-                } else {
-                    target_x -= 1;
-                }
-            }
-
-            float target_y = Random.Range(-3.0f, 3.0f);
-            if (target_y <= 1 && target_y >= -1) {
-                if (target_y > 0) {
-                    target_y += 1;
-                } else {
-                    target_y -= 1;
-                }
-            }
-            newTarget = new Vector3(carPos[0]+target_x, 0, carPos[2]+target_y);
-
-        }
-        // Debug.Log("newTarget: "+newTarget);
+        newTarget = get_new_target();
+        // while (!IsPointInsidePolygon(newTarget, outerPolygonVertices)){
+        //     newTarget = get_new_target();
+        // }
+        Debug.Log("newTarget: "+newTarget);
         MoveGameObject(target, newTarget);
 
         State state = updateState(newTarget, curver);

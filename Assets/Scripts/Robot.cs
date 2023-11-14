@@ -161,7 +161,7 @@ public class Robot : MonoBehaviour
         // motorListMF[0].SetVoltage(action[0]);
         // motorListMF[1].SetVoltage(action[1]);
         // Debug.Log(motorListMF.Count);
-        Debug.Log("action " + action.voltage[0] + " " + action.voltage[1] + " " + action.voltage[2] + " " + action.voltage[3]);
+        // Debug.Log("action " + action.voltage[0] + " " + action.voltage[1] + " " + action.voltage[2] + " " + action.voltage[3]);
         motorListMF[0].SetVoltage((float)action.voltage[0]);
         
         motorListMF[1].SetVoltage((float)action.voltage[1]);
