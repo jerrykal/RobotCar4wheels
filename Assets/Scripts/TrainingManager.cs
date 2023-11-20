@@ -155,7 +155,7 @@ public class TrainingManager : MonoBehaviour
     }
 
     Vector3 get_new_target() {
-        float dist = 0.5f;
+        float dist = 1f;
         float angle = randomFloat(0, 360);
         float x = dist * Mathf.Cos(angle * Mathf.Deg2Rad);
         float y = dist * Mathf.Sin(angle * Mathf.Deg2Rad);
